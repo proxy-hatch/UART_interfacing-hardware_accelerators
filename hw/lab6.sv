@@ -2,7 +2,7 @@
 
 import riscv_config::*;
 import riscv_types::*;
-localparam RAM_FILE =  "";
+localparam RAM_FILE =  "H:/ENSC350/lab6/sw/debug.raminit";
 
 
 module lab6 (

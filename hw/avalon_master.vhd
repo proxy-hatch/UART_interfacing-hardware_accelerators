@@ -36,29 +36,93 @@ entity avalon_master is
 end avalon_master;
     
 architecture Behavioral of avalon_master is
+	
 
 begin
+	process (clk)
+		-- states
+		type state_type is ( state_idle, state_readBUS, state_writeLS, state_writeBUS );
+		variable curr_state : state_type := state_type'left;
+		-- _int post-fix indicates internal (latched) signal
+		variable readdata_int, addr_in_int, data_in_int : std_logic_vector(31 downto 0);
+		variable be_int : std_logic_vector(3 downto 0);
+	begin
+		-- L/S interface handshake
+		if rising_edge(clk) then
+			case curr_state is
+				when state_idle =>
+					avread <= '0';
+					avwrite <= '0';
+					ready <= '1';
+					
+					if new_request = '1' then
+						-- LS side
+						ready <= '0';
+						addr_in_int := addr_in;
+						be_int := be;
+						
+						if rnw = '1' then	-- read from BUS
+							-- BUS side
+							avread <= '1';
+							curr_state := state_readBUS;
+						else				-- write to BUS
+							data_in_int := data_in;
+							-- BUS side
+							avwrite <= '1';
+							writedata <= data_in_int;
 
--------------------REMOVE AFTER TASK 1-----------------
---This code is only present to prevent the
---compiler from optimizing away
---the processor.  It does not implement the
---behaviour required for this lab
+							curr_state := state_writeBUS;
+						end if;
+						addr <= addr_in_int;
+						byteenable <= be_int;
+					else
+						curr_state := state_idle;
+					end if;
+					
+				when state_readBUS =>
+					if waitrequest = '0' then
+						-- BUS side
+						readdata_int := readdata;
+						avread <= '0';
+						avwrite <= '0';
+						-- LS side
+						data_valid <= '1';
+						data_out <= readdata_int;
+						
+						curr_state := state_writeLS;
+					else
+						curr_state := state_readBUS;	-- loop
+					end if;
+					
+				when state_writeLS =>
+					ready <= '1';
+					if data_ack = '1' then
+						data_valid <= '0';
 
-    process (clk) is
-    begin
-        if (clk'event and clk = '1') then
-                addr <= addr_in;
-                data_out <= readdata;
-                writedata <= data_in;
-                data_valid <= new_request and not data_ack; 
-            end if;
-        end if;
-    end process;
------------------------------------------------------------------
-  
+						curr_state := state_idle;	-- done
+					else
+						curr_state := state_writeLS;	-- loop
+					end if;	
+					
+				when state_writeBUS =>
+					if waitrequest = '0' then
+						-- BUS side
+						ready <= '1';
+						avwrite <= '0';
+						-- writeWaitTime = 0, therefore turn off input after a cycle
+						curr_state := state_idle;
+					else
+						curr_state := state_writeBUS;
+					end if;
+
+			end case;
+		end if;
+	end process;
+
+
+
 end Behavioral;
 
-    
+
     
     
