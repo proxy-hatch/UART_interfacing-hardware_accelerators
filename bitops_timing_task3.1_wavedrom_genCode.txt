@@ -1,0 +1,14 @@
+{signal: [
+	{name: 'clk', wave: 'p..........'}, 
+	{name: 'new_request_dec', wave: '0.1.0.10...'}, 
+	{name: 'new_request', wave: '0..1.0.10..'}, 
+	{name: 'ready', wave: '1...010..1.'}, 
+	{name: 'early_done', wave: '0.1..01..0.'}, 
+	{name: 'accepted', wave: '0..1010..10'}, 
+	{}, 
+	{name: 'fn3_dec', wave: 'x.==x.=x...', data: ['ins1', 'ins2', 'ins3']}, 
+	{name: 'fn3', wave: 'x..==..=...', data: ['ins1', 'ins2', 'ins3']}, 
+	{name: 'rs1', wave: 'x..==..=...', data: ['ins1', 'ins2', 'ins3']}, 
+	{}, 
+	{name: 'rd', wave: 'x..==.=....', data: ['ins1', 'ins2', 'ins3']}, 
+]}

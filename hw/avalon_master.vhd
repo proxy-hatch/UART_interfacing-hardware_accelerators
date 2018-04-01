@@ -49,6 +49,10 @@ begin
 	begin
 		-- L/S interface handshake
 		if rising_edge(clk) then
+			---- implementing the reset actually brakes it...
+			-- if rst <= '1' then
+				-- curr_state := state_idle;
+			-- end if;
 			case curr_state is
 				when state_idle =>
 					avread <= '0';
