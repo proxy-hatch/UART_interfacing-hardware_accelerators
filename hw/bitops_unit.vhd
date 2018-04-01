@@ -81,14 +81,15 @@ begin
 			when state_idle =>
 				if new_request_dec = '1' then
 					case fn3_dec is
-						when "000" =>
-							curr_state := state_CLZ;
-						when "001" =>
-							curr_state := state_POPC;
-						when "010" =>
-							curr_state := state_SWAPB;
+--						when "000" =>
+--							curr_state := state_CLZ;
+--						when "001" =>
+--							curr_state := state_POPC;
+--						when "010" =>
+--							curr_state := state_SWAPB;
 						when others =>
-							curr_state := state_SQRT;
+--							curr_state := state_SQRT;
+							curr_state := state_CLZ;
 					end case;
 					early_done <= '1';
 				else
@@ -183,14 +184,15 @@ begin
 					if new_request_dec = '1' then
 						early_done <= '1';
 						case fn3_dec is
-							when "000" =>
-								curr_state := state_CLZ;
-							when "001" =>
-								curr_state := state_POPC;
-							when "010" =>
-								curr_state := state_SWAPB;
-							when others =>
-								curr_state := state_SQRT;
+--						when "000" =>
+--							curr_state := state_CLZ;
+--						when "001" =>
+--							curr_state := state_POPC;
+--						when "010" =>
+--							curr_state := state_SWAPB;
+						when others =>
+--							curr_state := state_SQRT;
+							curr_state := state_CLZ;
 						end case;
 					else
 						early_done <= '0';
@@ -216,14 +218,15 @@ begin
 					if new_request_dec = '1' then
 						early_done <= '1';
 						case fn3_dec is
-							when "000" =>
-								curr_state := state_CLZ;
-							when "001" =>
-								curr_state := state_POPC;
-							when "010" =>
-								curr_state := state_SWAPB;
-							when others =>
-								curr_state := state_SQRT;
+--						when "000" =>
+--							curr_state := state_CLZ;
+--						when "001" =>
+--							curr_state := state_POPC;
+--						when "010" =>
+--							curr_state := state_SWAPB;
+						when others =>
+--							curr_state := state_SQRT;
+							curr_state := state_CLZ;
 						end case;
 					else
 						early_done <= '0';
@@ -247,7 +250,3 @@ begin
     
 
 end Behavioral;
-
-    
-    
-    
